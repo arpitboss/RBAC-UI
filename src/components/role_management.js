@@ -9,6 +9,9 @@ import {
     message,
     Typography,
     Popconfirm,
+    Row,
+    Col,
+    Card,
 } from 'antd';
 import axios from 'axios';
 
@@ -45,7 +48,6 @@ const RoleManagement = () => {
         };
     }, []);
 
-    // Get permission names from their IDs
     const getPermissionNames = (permissionIds) =>
         permissionIds
             .map((id) => permissions.find((perm) => perm.id === id)?.name || null)
@@ -141,26 +143,37 @@ const RoleManagement = () => {
     ];
 
     return (
-        <div>
-            <Typography.Title level={2}>Role Management</Typography.Title>
-            <Button type="primary" onClick={() => showModal()}>
-                Add Role
-            </Button>
-            <Table
-                style={{ marginTop: '20px' }}
-                columns={columns}
-                dataSource={roles}
-                rowKey="id"
-                pagination={{ pageSize: 5 }}
-            />
+        <div style={{ padding: '20px' }}>
+            <Row justify="space-between" align="middle" style={{ marginBottom: '20px' }}>
+                <Col>
+                    <Typography.Title level={2}>Role Management</Typography.Title>
+                </Col>
+                <Col>
+                    <Button type="primary" onClick={() => showModal()}>
+                        Add Role
+                    </Button>
+                </Col>
+            </Row>
+
+            <Card style={{ marginTop: '20px' }}>
+                <Table
+                    columns={columns}
+                    dataSource={roles}
+                    rowKey="id"
+                    pagination={{ pageSize: 5 }}
+                    style={{ marginBottom: '20px' }}
+                />
+            </Card>
 
             <Modal
                 title={editingRole ? 'Edit Role' : 'Add New Role'}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={handleAddOrUpdateRole}
+                okText={editingRole ? 'Update Role' : 'Add Role'}
+                cancelText="Cancel"
             >
-                <Form form={form} layout="vertical">
+                <Form form={form} layout="vertical" style={{ padding: '10px' }}>
                     <Form.Item
                         name="name"
                         label="Role Name"

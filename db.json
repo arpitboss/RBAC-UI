@@ -1,28 +1,13 @@
 {
   "users": [
     {
-      "id": "cf54",
+      "id": "b97b",
       "name": "Arpit",
-      "role": "c636",
+      "role": "c82f",
       "status": "Active"
-    },
-    {
-      "name": "Raghib",
-      "role": "c636",
-      "status": "Active",
-      "id": "12bd"
     }
   ],
-  "roles": [
-    {
-      "id": "c636",
-      "name": "Admin",
-      "permissions": [
-        "1",
-        "3"
-      ]
-    }
-  ],
+  "roles": [],
   "permissions": [
     {
       "id": "1",

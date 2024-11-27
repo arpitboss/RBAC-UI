@@ -10,6 +10,8 @@ import {
     Typography,
     Space,
     Popconfirm,
+    Row,
+    Col,
 } from 'antd';
 import axios from 'axios';
 
@@ -21,12 +23,6 @@ const UserManagement = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingUser, setEditingUser] = useState(null);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-
-    const PERMISSIONS = {
-        edit: '2',
-        delete: '3',
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,27 +39,6 @@ const UserManagement = () => {
         };
 
         fetchData();
-
-        // Listen for role updates
-        const handleRolesUpdated = (event) => {
-            const deletedRoleId = event.detail.roleId;
-
-            // Update users if their role no longer exists
-            setUsers((prevUsers) =>
-                prevUsers.map((user) => {
-                    if (user.role === deletedRoleId) {
-                        return { ...user, role: null }; // Set role to null
-                    }
-                    return user;
-                })
-            );
-        };
-
-        window.addEventListener('rolesUpdated', handleRolesUpdated);
-
-        return () => {
-            window.removeEventListener('rolesUpdated', handleRolesUpdated);
-        };
     }, []);
 
     const showModal = (user = null) => {
@@ -80,20 +55,17 @@ const UserManagement = () => {
         try {
             const values = await form.validateFields();
             if (editingUser) {
-                // Update user
                 const response = await axios.put(`http://localhost:5000/users/${editingUser.id}`, values);
                 setUsers((prevUsers) =>
                     prevUsers.map((user) => (user.id === editingUser.id ? response.data : user))
                 );
-                setSnackbarMessage('User updated successfully');
+                message.success('User updated successfully');
             } else {
-                // Add new user
                 const { data: newUser } = await axios.post('http://localhost:5000/users', values);
                 setUsers((prevUsers) => [...prevUsers, newUser]);
-                setSnackbarMessage('User added successfully');
+                message.success('User added successfully');
             }
             setIsModalVisible(false);
-            message.success(snackbarMessage);
         } catch (error) {
             console.error('Error saving user:', error);
             message.error('Error saving user');
@@ -109,16 +81,6 @@ const UserManagement = () => {
             console.error('Error deleting user:', error);
             message.error('Error deleting user');
         }
-    };
-
-    const hasPermission = (roleId, permission) => {
-        if (!roleId) return true; // Enable buttons if the role is null (role was deleted)
-
-        const role = roles.find((role) => role.id === roleId);
-        if (role && role.permissions) {
-            return role.permissions.includes(PERMISSIONS[permission]); // Check by permission ID
-        }
-        return false;
     };
 
     const columns = [
@@ -143,11 +105,7 @@ const UserManagement = () => {
             key: 'actions',
             render: (_, user) => (
                 <Space>
-                    <Button
-                        type="link"
-                        disabled={!hasPermission(user.role, 'edit')}
-                        onClick={() => showModal(user)}
-                    >
+                    <Button type="link" onClick={() => showModal(user)}>
                         Edit
                     </Button>
                     <Popconfirm
@@ -155,9 +113,8 @@ const UserManagement = () => {
                         onConfirm={() => deleteUser(user.id)}
                         okText="Yes"
                         cancelText="No"
-                        disabled={!hasPermission(user.role, 'delete')}
                     >
-                        <Button type="link" danger disabled={!hasPermission(user.role, 'delete')}>
+                        <Button type="link" danger>
                             Delete
                         </Button>
                     </Popconfirm>
@@ -167,23 +124,30 @@ const UserManagement = () => {
     ];
 
     return (
-        <div>
-            <Typography.Title level={2}>User Management</Typography.Title>
-            <Button type="primary" onClick={() => showModal()}>
-                Add User
-            </Button>
+        <div style={{ padding: '20px' }}>
+            <Row justify="space-between" align="middle" style={{ marginBottom: '20px' }}>
+                <Col>
+                    <Typography.Title level={2}>User Management</Typography.Title>
+                </Col>
+                <Col>
+                    <Button type="primary" onClick={() => showModal()}>
+                        Add User
+                    </Button>
+                </Col>
+            </Row>
             <Table
-                style={{ marginTop: '20px' }}
                 columns={columns}
                 dataSource={users}
                 rowKey="id"
                 pagination={{ pageSize: 5 }}
+                style={{ background: 'white', borderRadius: '8px' }}
             />
             <Modal
                 title={editingUser ? 'Edit User' : 'Add New User'}
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={handleAddOrUpdateUser}
+                destroyOnClose
             >
                 <Form form={form} layout="vertical">
                     <Form.Item
@@ -191,7 +155,7 @@ const UserManagement = () => {
                         label="Name"
                         rules={[{ required: true, message: 'Please enter the user name' }]}
                     >
-                        <Input />
+                        <Input placeholder="Enter user name" />
                     </Form.Item>
                     <Form.Item
                         name="role"

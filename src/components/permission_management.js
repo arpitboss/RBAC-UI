@@ -7,6 +7,8 @@ import {
     Checkbox,
     Typography,
     message,
+    Row,
+    Col,
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -67,30 +69,36 @@ const PermissionManagement = () => {
     };
 
     return (
-        <div>
-            
-                <Typography.Title level={2}>
-                    
-                    Permission Management
-                    <LockOutlined style={{ marginLeft: '8px', color: '#1890ff' }} />
-                </Typography.Title>
-            
-            <Button type="primary" onClick={() => setIsModalVisible(true)}>
-                Manage Permissions
-            </Button>
+        <div style={{ padding: '20px' }}>
+            <Row justify="space-between" align="middle" style={{ marginBottom: '20px' }}>
+                <Col>
+                    <Typography.Title level={2}>
+                        Permission Management
+                        <LockOutlined style={{ marginLeft: '8px', color: '#1890ff' }} />
+                    </Typography.Title>
+                </Col>
+                <Col>
+                    <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                        Manage Permissions
+                    </Button>
+                </Col>
+            </Row>
 
             <Modal
                 title="Assign Permissions to Role"
                 visible={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={handleSavePermissions}
+                okText="Save Permissions"
+                cancelText="Cancel"
             >
-                <Form layout="vertical">
+                <Form layout="vertical" style={{ padding: '10px' }}>
                     <Form.Item label="Role" required>
                         <Select
                             placeholder="Select a role"
                             value={selectedRole}
                             onChange={(value) => setSelectedRole(value)}
+                            style={{ width: '100%' }}
                         >
                             {roles.map((role) => (
                                 <Option key={role.id} value={role.id}>
@@ -107,6 +115,7 @@ const PermissionManagement = () => {
                             }))}
                             value={selectedPermissions}
                             onChange={(checkedValues) => setSelectedPermissions(checkedValues)}
+                            style={{ display: 'block' }}
                         />
                     </Form.Item>
                 </Form>

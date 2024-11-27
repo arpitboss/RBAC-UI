@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './auth/admin_login';
 import UserManagement from './components/user_management';
@@ -9,9 +9,14 @@ import Navbar from './components/navbar';
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    useEffect(() => {
+        const savedAuth = JSON.parse(localStorage.getItem('auth')) || {};
+        setIsAuthenticated(savedAuth.isLoggedIn || false);
+    }, []);
+
     return (
         <Router>
-            {isAuthenticated && <Navbar />}
+            {isAuthenticated && <Navbar setIsAuthenticated={setIsAuthenticated} />}
             <Routes>
                 <Route
                     path="/"
