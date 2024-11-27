@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Option } = Select;
 
@@ -29,7 +30,9 @@ const PermissionManagement = () => {
 
     const fetchRoles = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/roles');
+            const response = await axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles',{headers: {
+                'user-id' : uuidv4()
+            }});
             setRoles(response.data);
         } catch (error) {
             console.error('Error fetching roles:', error);
@@ -39,7 +42,9 @@ const PermissionManagement = () => {
 
     const fetchPermissions = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/permissions');
+            const response = await axios.get(' https://850c-103-71-76-242.ngrok-free.app/permissions',{headers: {
+                'user-id' : uuidv4()
+            }});
             setPermissions(response.data);
         } catch (error) {
             console.error('Error fetching permissions:', error);
@@ -54,10 +59,13 @@ const PermissionManagement = () => {
         if (!updatedRole) return;
 
         try {
-            await axios.put(`http://localhost:5000/roles/${selectedRole}`, {
+            await axios.put(` https://850c-103-71-76-242.ngrok-free.app/roles/${selectedRole}`, {
                 ...updatedRole,
                 permissions: selectedPermissions,
-            });
+                
+            }, {headers: {
+                'user-id' : uuidv4()
+            }});
             // Emit an event to notify RoleManagement.js
             window.dispatchEvent(new Event('rolesUpdated'));
             message.success('Permissions updated successfully');

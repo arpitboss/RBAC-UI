@@ -12,9 +12,9 @@ export const AppProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes, permissionsRes] = await Promise.all([
-                    axios.get('http://localhost:5000/users'),
-                    axios.get('http://localhost:5000/roles'),
-                    axios.get('http://localhost:5000/permissions'),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/users'),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles'),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/permissions'),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
 
     const updateRoles = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/roles');
+            const response = await axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles');
             setRoles(response.data);
         } catch (error) {
             console.error('Error updating roles:', error);

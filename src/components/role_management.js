@@ -14,6 +14,7 @@ import {
     Card,
 } from 'antd';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const RoleManagement = () => {
     const [roles, setRoles] = useState([]);
@@ -22,13 +23,19 @@ const RoleManagement = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingRole, setEditingRole] = useState(null);
 
+
     useEffect(() => {
         // Fetch roles and permissions
         const fetchRolesAndPermissions = async () => {
             try {
                 const [rolesResponse, permissionsResponse] = await Promise.all([
-                    axios.get('http://localhost:5000/roles'),
-                    axios.get('http://localhost:5000/permissions'),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles', {headers: {
+                        'user-id' : uuidv4()
+                    }}
+                    ),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/permissions', {headers: {
+                        'user-id' : uuidv4()
+                    }}),
                 ]);
                 setRoles(rolesResponse.data);
                 setPermissions(permissionsResponse.data);
@@ -70,14 +77,18 @@ const RoleManagement = () => {
             const values = await form.validateFields();
             if (editingRole) {
                 // Update role
-                const response = await axios.put(`http://localhost:5000/roles/${editingRole.id}`, values);
+                const response = await axios.put(` https://850c-103-71-76-242.ngrok-free.app/roles/${editingRole.id}`, values, {headers: {
+                    'user-id' : uuidv4()
+                }});
                 setRoles((prevRoles) =>
                     prevRoles.map((role) => (role.id === editingRole.id ? response.data : role))
                 );
                 message.success('Role updated successfully');
             } else {
                 // Add new role
-                const response = await axios.post('http://localhost:5000/roles', values);
+                const response = await axios.post(' https://850c-103-71-76-242.ngrok-free.app/roles', values, {headers: {
+                    'user-id' : uuidv4()
+                }});
                 setRoles((prevRoles) => [...prevRoles, response.data]);
                 message.success('Role added successfully');
             }
@@ -91,7 +102,9 @@ const RoleManagement = () => {
 
     const handleDeleteRole = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/roles/${id}`);
+            await axios.delete(` https://850c-103-71-76-242.ngrok-free.app/roles/${id}`, {headers: {
+                'user-id' : uuidv4()
+            }});
             setRoles((prevRoles) => prevRoles.filter((role) => role.id !== id));
             message.success('Role deleted successfully');
 

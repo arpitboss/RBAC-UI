@@ -14,6 +14,8 @@ import {
     Col,
 } from 'antd';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const { Option } = Select;
 
@@ -23,13 +25,18 @@ const UserManagement = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingUser, setEditingUser] = useState(null);
+    
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes] = await Promise.all([
-                    axios.get('http://localhost:5000/users'),
-                    axios.get('http://localhost:5000/roles'),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/users', {headers: {
+                        'user-id' : uuidv4()
+                    }}),
+                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles', {headers: {
+                        'user-id' : uuidv4()
+                    }}),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -55,13 +62,17 @@ const UserManagement = () => {
         try {
             const values = await form.validateFields();
             if (editingUser) {
-                const response = await axios.put(`http://localhost:5000/users/${editingUser.id}`, values);
+                const response = await axios.put(` https://850c-103-71-76-242.ngrok-free.app/users/${editingUser.id}`, values, {headers: {
+                    'user-id' : uuidv4()
+                }});
                 setUsers((prevUsers) =>
                     prevUsers.map((user) => (user.id === editingUser.id ? response.data : user))
                 );
                 message.success('User updated successfully');
             } else {
-                const { data: newUser } = await axios.post('http://localhost:5000/users', values);
+                const { data: newUser } = await axios.post(' https://850c-103-71-76-242.ngrok-free.app/users', values, {headers: {
+                    'user-id' : uuidv4()
+                }});
                 setUsers((prevUsers) => [...prevUsers, newUser]);
                 message.success('User added successfully');
             }
@@ -74,7 +85,9 @@ const UserManagement = () => {
 
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/users/${id}`);
+            await axios.delete(` https://850c-103-71-76-242.ngrok-free.app/users/${id}`, {headers: {
+                'user-id' : uuidv4()
+            }});
             setUsers(users.filter((user) => user.id !== id));
             message.success('User deleted successfully');
         } catch (error) {
