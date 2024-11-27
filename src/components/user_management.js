@@ -14,8 +14,7 @@ import {
     Col,
 } from 'antd';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-
+const BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL;
 
 const { Option } = Select;
 
@@ -25,18 +24,18 @@ const UserManagement = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingUser, setEditingUser] = useState(null);
-    
 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes] = await Promise.all([
-                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/users', {headers: {
-                        'user-id' : uuidv4()
-                    }}),
-                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles', {headers: {
-                        'user-id' : uuidv4()
-                    }}),
+                    axios.get(`${BACKEND_URL}/users`, {headers: new Headers({
+                        "ngrok-skip-browser-warning": "69420",
+                        }),}),
+                    axios.get(`${BACKEND_URL}/roles`, {headers: new Headers({
+                        "ngrok-skip-browser-warning": "69420",
+                        }),}),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -62,17 +61,17 @@ const UserManagement = () => {
         try {
             const values = await form.validateFields();
             if (editingUser) {
-                const response = await axios.put(` https://850c-103-71-76-242.ngrok-free.app/users/${editingUser.id}`, values, {headers: {
-                    'user-id' : uuidv4()
-                }});
+                const response = await axios.put(`${BACKEND_URL}/users/${editingUser.id}`, values, {headers: new Headers({
+                    "ngrok-skip-browser-warning": "69420",
+                    }),});
                 setUsers((prevUsers) =>
                     prevUsers.map((user) => (user.id === editingUser.id ? response.data : user))
                 );
                 message.success('User updated successfully');
             } else {
-                const { data: newUser } = await axios.post(' https://850c-103-71-76-242.ngrok-free.app/users', values, {headers: {
-                    'user-id' : uuidv4()
-                }});
+                const { data: newUser } = await axios.post(`${BACKEND_URL}/users`, values, {headers: new Headers({
+                    "ngrok-skip-browser-warning": "69420",
+                    }),});
                 setUsers((prevUsers) => [...prevUsers, newUser]);
                 message.success('User added successfully');
             }
@@ -85,9 +84,9 @@ const UserManagement = () => {
 
     const deleteUser = async (id) => {
         try {
-            await axios.delete(` https://850c-103-71-76-242.ngrok-free.app/users/${id}`, {headers: {
-                'user-id' : uuidv4()
-            }});
+            await axios.delete(`${BACKEND_URL}/users/${id}`, {headers: new Headers({
+                "ngrok-skip-browser-warning": "69420",
+                }),});
             setUsers(users.filter((user) => user.id !== id));
             message.success('User deleted successfully');
         } catch (error) {

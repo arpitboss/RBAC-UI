@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-
+const BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL;
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -8,13 +8,15 @@ export const AppProvider = ({ children }) => {
     const [roles, setRoles] = useState([]);
     const [permissions, setPermissions] = useState([]);
 
+    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes, permissionsRes] = await Promise.all([
-                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/users'),
-                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles'),
-                    axios.get(' https://850c-103-71-76-242.ngrok-free.app/permissions'),
+                    axios.get(`${BACKEND_URL}/users`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
+                    axios.get(`${BACKEND_URL}/roles`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
+                    axios.get(`${BACKEND_URL}/permissions`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -28,7 +30,7 @@ export const AppProvider = ({ children }) => {
 
     const updateRoles = async () => {
         try {
-            const response = await axios.get(' https://850c-103-71-76-242.ngrok-free.app/roles');
+            const response = await axios.get(`${BACKEND_URL}/roles`, {headers: {"ngrok-skip-browser-warning": "69420"}});
             setRoles(response.data);
         } catch (error) {
             console.error('Error updating roles:', error);

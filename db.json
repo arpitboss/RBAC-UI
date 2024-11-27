@@ -1,5 +1,12 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "2037",
+    "name": "Arpit",
+    "role": "8794",
+    "status": "Active"
+    },
+  ],
   "roles": [
     {
       "id": "8794",
