@@ -14,9 +14,15 @@ export const AppProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes, permissionsRes] = await Promise.all([
-                    axios.get(`${BACKEND_URL}/users`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
-                    axios.get(`${BACKEND_URL}/roles`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
-                    axios.get(`${BACKEND_URL}/permissions`, {headers: {"ngrok-skip-browser-warning": "69420"}}),
+                    axios.get(`${BACKEND_URL}/users`, {headers: new Headers({
+                        "ngrok-skip-browser-warning": "69420",
+                        })}),
+                    axios.get(`${BACKEND_URL}/roles`, {headers: new Headers({
+                        "ngrok-skip-browser-warning": "69420",
+                        })}),
+                    axios.get(`${BACKEND_URL}/permissions`, {headers: new Headers({
+                        "ngrok-skip-browser-warning": "69420",
+                        })}),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -30,7 +36,9 @@ export const AppProvider = ({ children }) => {
 
     const updateRoles = async () => {
         try {
-            const response = await axios.get(`${BACKEND_URL}/roles`, {headers: {"ngrok-skip-browser-warning": "69420"}});
+            const response = await axios.get(`${BACKEND_URL}/roles`, {headers: new Headers({
+                "ngrok-skip-browser-warning": "69420",
+                })});
             setRoles(response.data);
         } catch (error) {
             console.error('Error updating roles:', error);
