@@ -22,11 +22,7 @@ const RoleManagement = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingRole, setEditingRole] = useState(null);
 
-    
-
-
     useEffect(() => {
-        // Fetch roles and permissions
         const fetchRolesAndPermissions = async () => {
             try {
                 const [rolesResponse, permissionsResponse] = await Promise.all([
@@ -62,7 +58,6 @@ const RoleManagement = () => {
             .filter(Boolean)
             .join(', ');
 
-    // Handle Add or Edit Role Modal
     const showModal = (role = null) => {
         setEditingRole(role);
         setIsModalVisible(true);
@@ -77,7 +72,6 @@ const RoleManagement = () => {
         try {
             const values = await form.validateFields();
             if (editingRole) {
-                // Update role
                 const response = await axios.put(`${BACKEND_URL}/roles/${editingRole.id}`, values, {headers: new Headers({
                     "ngrok-skip-browser-warning": "69420",
                     }),});
@@ -86,7 +80,6 @@ const RoleManagement = () => {
                 );
                 message.success('Role updated successfully');
             } else {
-                // Add new role
                 const response = await axios.post(`${BACKEND_URL}/roles`, values, {headers: new Headers({
                     "ngrok-skip-browser-warning": "69420",
                     }),});
@@ -109,7 +102,6 @@ const RoleManagement = () => {
             setRoles((prevRoles) => prevRoles.filter((role) => role.id !== id));
             message.success('Role deleted successfully');
 
-            // Dispatch rolesUpdated event
             const event = new CustomEvent('rolesUpdated', { detail: { roleId: id } });
             window.dispatchEvent(event);
         } catch (error) {

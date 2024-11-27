@@ -66,7 +66,6 @@ const PermissionManagement = () => {
                     "ngrok-skip-browser-warning": "69420",
                     })
             },);
-            // Emit an event to notify RoleManagement.js
             window.dispatchEvent(new Event('rolesUpdated'));
             message.success('Permissions updated successfully');
             setIsModalVisible(false);
