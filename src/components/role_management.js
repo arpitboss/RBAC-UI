@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AiOutlineEdit,AiOutlineDelete } from "react-icons/ai";
 import {
     Table,
     Button,
@@ -12,6 +13,7 @@ import {
     Row,
     Col,
     Card,
+    Tag
 } from 'antd';
 import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL;
@@ -54,9 +56,26 @@ const RoleManagement = () => {
 
     const getPermissionNames = (permissionIds) =>
         permissionIds
-            .map((id) => permissions.find((perm) => perm.id === id)?.name || null)
-            .filter(Boolean)
-            .join(', ');
+            .map((permId) => {
+                const permission = permissions.find((perm) => perm.id === permId);
+                const permissionName = permission?.name || null;
+    
+                let color = 'blue';
+                if (permissionName === 'Read') {
+                    color = 'green';
+                } else if (permissionName === 'Write') {
+                    color = 'blue';
+                } else if (permissionName === 'Delete') {
+                    color = 'red';
+                }
+    
+                return (
+                    <Tag key={permId} color={color}>
+                        {permissionName}
+                    </Tag>
+                );
+            });
+    
 
     const showModal = (role = null) => {
         setEditingRole(role);
@@ -123,7 +142,7 @@ const RoleManagement = () => {
             render: (permissions) =>
                 permissions && permissions.length > 0
                     ? getPermissionNames(permissions)
-                    : 'No Permissions',
+                    : <span style={{ color: '#808080' }}>No Permissions</span>,
         },
         {
             title: 'Actions',
@@ -131,7 +150,8 @@ const RoleManagement = () => {
             render: (_, role) => (
                 <Space>
                     <Button type="link" onClick={() => showModal(role)}>
-                        Edit
+                    <AiOutlineEdit  />
+                    Edit
                     </Button>
                     <Popconfirm
                         title="Are you sure you want to delete this role?"
@@ -140,7 +160,8 @@ const RoleManagement = () => {
                         cancelText="No"
                     >
                         <Button type="link" danger>
-                            Delete
+                        <AiOutlineDelete />
+                        Delete
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -173,7 +194,7 @@ const RoleManagement = () => {
 
             <Modal
                 title={editingRole ? 'Edit Role' : 'Add New Role'}
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={handleAddOrUpdateRole}
                 okText={editingRole ? 'Update Role' : 'Add Role'}

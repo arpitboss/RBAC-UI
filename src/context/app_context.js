@@ -3,7 +3,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL;
 const AppContext = createContext();
 
-export const AppProvider = ({ children }) => {
+export const AppProvider = ({ items }) => {
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState([]);
     const [permissions, setPermissions] = useState([]);
@@ -47,7 +47,7 @@ export const AppProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ users, setUsers, roles, updateRoles, permissions }}>
-            {children}
+            {items}
         </AppContext.Provider>
     );
 };

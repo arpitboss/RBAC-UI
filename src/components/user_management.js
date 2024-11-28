@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import {
     Table,
     Button,
@@ -12,6 +13,8 @@ import {
     Popconfirm,
     Row,
     Col,
+    Card,
+    Tag
 } from 'antd';
 import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL;
@@ -25,17 +28,20 @@ const UserManagement = () => {
     const [form] = Form.useForm();
     const [editingUser, setEditingUser] = useState(null);
 
-    
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [usersRes, rolesRes] = await Promise.all([
-                    axios.get(`${BACKEND_URL}/users`, {headers: new Headers({
-                        "ngrok-skip-browser-warning": "69420",
-                        }),}),
-                    axios.get(`${BACKEND_URL}/roles`, {headers: new Headers({
-                        "ngrok-skip-browser-warning": "69420",
-                        }),}),
+                    axios.get(`${BACKEND_URL}/users`, {
+                        headers: new Headers({
+                            "ngrok-skip-browser-warning": "69420",
+                        }),
+                    }),
+                    axios.get(`${BACKEND_URL}/roles`, {
+                        headers: new Headers({
+                            "ngrok-skip-browser-warning": "69420",
+                        }),
+                    }),
                 ]);
                 setUsers(usersRes.data);
                 setRoles(rolesRes.data);
@@ -61,17 +67,31 @@ const UserManagement = () => {
         try {
             const values = await form.validateFields();
             if (editingUser) {
-                const response = await axios.put(`${BACKEND_URL}/users/${editingUser.id}`, values, {headers: new Headers({
-                    "ngrok-skip-browser-warning": "69420",
-                    }),});
+                const response = await axios.put(
+                    `${BACKEND_URL}/users/${editingUser.id}`,
+                    values,
+                    {
+                        headers: new Headers({
+                            "ngrok-skip-browser-warning": "69420",
+                        }),
+                    }
+                );
                 setUsers((prevUsers) =>
-                    prevUsers.map((user) => (user.id === editingUser.id ? response.data : user))
+                    prevUsers.map((user) =>
+                        user.id === editingUser.id ? response.data : user
+                    )
                 );
                 message.success('User updated successfully');
             } else {
-                const { data: newUser } = await axios.post(`${BACKEND_URL}/users`, values, {headers: new Headers({
-                    "ngrok-skip-browser-warning": "69420",
-                    }),});
+                const { data: newUser } = await axios.post(
+                    `${BACKEND_URL}/users`,
+                    values,
+                    {
+                        headers: new Headers({
+                            "ngrok-skip-browser-warning": "69420",
+                        }),
+                    }
+                );
                 setUsers((prevUsers) => [...prevUsers, newUser]);
                 message.success('User added successfully');
             }
@@ -84,9 +104,11 @@ const UserManagement = () => {
 
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`${BACKEND_URL}/users/${id}`, {headers: new Headers({
-                "ngrok-skip-browser-warning": "69420",
-                }),});
+            await axios.delete(`${BACKEND_URL}/users/${id}`, {
+                headers: new Headers({
+                    "ngrok-skip-browser-warning": "69420",
+                }),
+            });
             setUsers(users.filter((user) => user.id !== id));
             message.success('User deleted successfully');
         } catch (error) {
@@ -111,13 +133,20 @@ const UserManagement = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
+            render: (status) => (
+                <Tag color={status === 'Active' ? 'green' : 'volcano'}>{status}</Tag>
+            ),
         },
         {
             title: 'Actions',
             key: 'actions',
             render: (_, user) => (
                 <Space>
-                    <Button type="link" onClick={() => showModal(user)}>
+                    <Button
+                        type="link"
+                        onClick={() => showModal(user)}
+                        icon={<AiOutlineEdit />}
+                    >
                         Edit
                     </Button>
                     <Popconfirm
@@ -126,7 +155,11 @@ const UserManagement = () => {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button type="link" danger>
+                        <Button
+                            type="link"
+                            danger
+                            icon={<AiOutlineDelete />}
+                        >
                             Delete
                         </Button>
                     </Popconfirm>
@@ -142,24 +175,35 @@ const UserManagement = () => {
                     <Typography.Title level={2}>User Management</Typography.Title>
                 </Col>
                 <Col>
-                    <Button type="primary" onClick={() => showModal()}>
+                    <Button
+                        type="primary"
+                        onClick={() => showModal()}
+                        style={{ marginBottom: 16 }}
+                    >
                         Add User
                     </Button>
                 </Col>
             </Row>
-            <Table
-                columns={columns}
-                dataSource={users}
-                rowKey="id"
-                pagination={{ pageSize: 5 }}
-                style={{ background: 'white', borderRadius: '8px' }}
-            />
+
+            <Card style={{ background: '#f9f9f9', borderRadius: '8px', padding: '20px' }}>
+                <Table
+                    columns={columns}
+                    dataSource={users}
+                    rowKey="id"
+                    pagination={{ pageSize: 5 }}
+                    bordered
+                    style={{ background: 'white' }}
+                />
+            </Card>
+
             <Modal
                 title={editingUser ? 'Edit User' : 'Add New User'}
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 onOk={handleAddOrUpdateUser}
                 destroyOnClose
+                width={600}
+                styles={{ padding: '24px' }}
             >
                 <Form form={form} layout="vertical">
                     <Form.Item
@@ -169,6 +213,7 @@ const UserManagement = () => {
                     >
                         <Input placeholder="Enter user name" />
                     </Form.Item>
+
                     <Form.Item
                         name="role"
                         label="Role"
@@ -182,6 +227,7 @@ const UserManagement = () => {
                             ))}
                         </Select>
                     </Form.Item>
+
                     <Form.Item
                         name="status"
                         label="Status"
