@@ -1,70 +1,244 @@
-# Getting Started with Create React App
+# Role-Based Access Control (RBAC) UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A robust admin dashboard designed for efficient management of users, roles, and dynamic permissions. The dashboard ensures role-based access control (RBAC) with a secure and user-friendly interface.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Features](#features)
+- [Core Requirements](#core-requirements)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Components](#components)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **User Management**  
+  Add, edit, delete, and manage users with role assignment and status updates.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Role Management**  
+  Define roles, assign specific permissions, and edit them dynamically.
 
-### `npm run build`
+- **Permission Management**  
+  Assign granular permissions (Read, Write, Delete) to roles, ensuring access control.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Mock API Simulation**  
+  JSON-based database with customizable API responses to validate functionality.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Core Requirements
 
-### `npm run eject`
+1. **User Management**  
+   - View user list with details.
+   - Add, edit, or delete users.
+   - Assign roles and manage user status (e.g., Active/Inactive).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Role Management**  
+   - Define new roles.
+   - Edit roles and their permissions.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Dynamic Permissions**  
+   - Assign specific permissions to roles (Read, Write, Delete).
+   - Display and manage permissions dynamically.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Custom API Simulation** (Optional)  
+   - Mock API calls for CRUD operations on users and roles.
+   - Simulate server responses to validate the frontend functionality.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## Technologies Used
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Frontend:** React.js with Ant Design components for the UI.
+- **Backend:** JSON Server for mock APIs and data persistence.
+- **Deployment:** Vercel for serverless deployment of the backend.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Clone the repository:
 
-### Analyzing the Bundle Size
+   ```bash
+   git clone https://github.com/arpitboss/RBAC-UI.git
+   cd rbac-ui
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Install dependencies:
 
-### Making a Progressive Web App
+   ```bash
+   npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Run the server:
 
-### Advanced Configuration
+   ```bash
+   npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+4. Visit ```http://localhost:3000``` to view the application.
 
-### Deployment
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```plaintext
+admin-dashboard/
+├── db.json               # Mock database for users, roles, and permissions
+├── server.js             # Custom JSON Server configuration with RBAC middleware
+├── package.json          # Project dependencies and scripts
+├── src/                  # Source code for the frontend
+│   ├── components/       # React components
+│   │   ├── Navbar.js          # Navigation bar for the dashboard
+│   │   ├── UserManagement.js  # User management module
+│   │   ├── RoleManagement.js  # Role management module
+│   │   ├── PermissionManagement.js # Permission management module
+│   ├── App.js            # Main app component
+│   ├── index.js          # React DOM rendering
+├── README.md             # Project documentation (this file)
+```
 
-### `npm run build` fails to minify
+## API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### **Users**
+
+- **GET** `/users`  
+  Fetch all users.
+
+- **POST** `/users`  
+  Add a new user.
+
+- **PUT** `/users/:id`  
+  Update a user's details.
+
+- **DELETE** `/users/:id`  
+  Remove a user.
+
+---
+
+### **Roles**
+
+- **GET** `/roles`  
+  Fetch all roles.
+
+- **POST** `/roles`  
+  Add a new role.
+
+- **PUT** `/roles/:id`  
+  Update a role.
+
+- **DELETE** `/roles/:id`  
+  Remove a role.
+
+---
+
+## Components
+
+### **Navbar.js**
+
+A reusable navigation bar that provides links to the different sections of the dashboard (e.g., Users, Roles, Permissions).
+
+### **UserManagement.js**
+
+Handles all user-related CRUD operations. Provides a table view of users with functionality to:
+
+- Add new users.
+- Edit user details.
+- Delete users.
+- Assign roles.
+
+### **RoleManagement.js**
+
+Manages role-related operations. Displays roles in a tabular format with the ability to:
+
+- Create new roles.
+- Update existing roles.
+- Delete roles.
+
+### **PermissionManagement.js**
+
+Enables administrators to:
+
+- Define new permissions.
+- View existing permissions.
+- Assign permissions for specific roles.
+- Ensure clear and secure permission assignment.
+
+---
+
+## Screenshots
+
+<img width="959" alt="admin_login" src="https://github.com/user-attachments/assets/c91a0186-b548-4672-af72-d6e9f460d80e">
+
+<img width="959" alt="user_dashboard" src="https://github.com/user-attachments/assets/f25aae43-3fb8-488d-8e5e-285c8b1911ca">
+
+<img width="959" alt="role_management" src="https://github.com/user-attachments/assets/2a8a1028-d500-426e-a354-e8880c365442">
+
+<img width="959" alt="permission_management" src="https://github.com/user-attachments/assets/389536fb-5bd5-4896-a430-b4a76afbcc55">
+
+---
+
+## Contributing
+
+We welcome contributions to this project! To contribute:
+
+1. **Fork the repository**:
+    Click the "Fork" button at the top-right corner of this page to create your copy of the repository.
+
+2. **Clone the forked repository**:
+    ```bash
+    git clone https://github.com/arpitboss/RBAC-UI.git
+    ```
+
+3. **Create a new branch**:
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+
+4. **Make changes**:
+    Add your improvements or new features.
+
+5. **Commit your changes**:
+    ```bash
+    git commit -m "Add a brief description of your changes"
+    ```
+
+6. **Push to your branch**:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+
+7. **Submit a pull request (PR)**:
+    Go to the original repository and click on "Compare & pull request" to submit your changes for review.
+
+---
+
+## License
+
+MIT License
+
+Copyright (c) 2024 Arpit Verma
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
