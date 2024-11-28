@@ -21,38 +21,38 @@ A robust admin dashboard designed for efficient management of users, roles, and 
 
 ## Features
 
-- **User Management**  
-  Add, edit, delete, and manage users with role assignment and status updates.
+- **User Management**
+    Add, edit, delete, and manage users with role assignment and status updates.
 
-- **Role Management**  
-  Define roles, assign specific permissions, and edit them dynamically.
+- **Role Management**
+    Define roles, assign specific permissions, and edit them dynamically.
 
-- **Permission Management**  
-  Assign granular permissions (Read, Write, Delete) to roles, ensuring access control.
+- **Permission Management**
+    Assign granular permissions (Read, Write, Delete) to roles, ensuring access control.
 
-- **Mock API Simulation**  
-  JSON-based database with customizable API responses to validate functionality.
+- **Mock API Simulation**
+    JSON-based database with customizable API responses to validate functionality.
 
 ---
 
 ## Core Requirements
 
-1. **User Management**  
-   - View user list with details.
-   - Add, edit, or delete users.
-   - Assign roles and manage user status (e.g., Active/Inactive).
+1. **User Management**
+    - View user list with details.
+    - Add, edit, or delete users.
+    - Assign roles and manage user status (e.g., Active/Inactive).
 
-2. **Role Management**  
-   - Define new roles.
-   - Edit roles and their permissions.
+2. **Role Management**
+    - Define new roles.
+    - Edit roles and their permissions.
 
-3. **Dynamic Permissions**  
-   - Assign specific permissions to roles (Read, Write, Delete).
-   - Display and manage permissions dynamically.
+3. **Dynamic Permissions**
+    - Assign specific permissions to roles (Read, Write, Delete).
+    - Display and manage permissions dynamically.
 
-4. **Custom API Simulation** (Optional)  
-   - Mock API calls for CRUD operations on users and roles.
-   - Simulate server responses to validate the frontend functionality.
+4. **Custom API Simulation** (Optional)
+    - Mock API calls for CRUD operations on users and roles.
+    - Simulate server responses to validate the frontend functionality.
 
 ---
 
@@ -68,19 +68,19 @@ A robust admin dashboard designed for efficient management of users, roles, and 
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/arpitboss/RBAC-UI.git
-   cd rbac-ui
+    ```bash
+    git clone https://github.com/arpitboss/RBAC-UI.git
+    cd rbac-ui
 
 2. Install dependencies:
 
-   ```bash
-   npm install
+    ```bash
+    npm install
 
 3. Run the server:
 
-   ```bash
-   npm start
+    ```bash
+    npm start
 
 4. Visit ```http://localhost:3000``` to view the application.
 
@@ -106,33 +106,33 @@ admin-dashboard/
 
 ### **Users**
 
-- **GET** `/users`  
-  Fetch all users.
+- **GET** `/users`
+    Fetch all users.
 
-- **POST** `/users`  
-  Add a new user.
+- **POST** `/users`
+    Add a new user.
 
-- **PUT** `/users/:id`  
-  Update a user's details.
+- **PUT** `/users/:id`
+    Update a user's details.
 
-- **DELETE** `/users/:id`  
-  Remove a user.
+- **DELETE** `/users/:id`
+    Remove a user.
 
 ---
 
 ### **Roles**
 
-- **GET** `/roles`  
-  Fetch all roles.
+- **GET** `/roles`
+    Fetch all roles.
 
-- **POST** `/roles`  
-  Add a new role.
+- **POST** `/roles`
+    Add a new role.
 
-- **PUT** `/roles/:id`  
-  Update a role.
+- **PUT** `/roles/:id`
+    Update a role.
 
-- **DELETE** `/roles/:id`  
-  Remove a role.
+- **DELETE** `/roles/:id`
+    Remove a role.
 
 ---
 
